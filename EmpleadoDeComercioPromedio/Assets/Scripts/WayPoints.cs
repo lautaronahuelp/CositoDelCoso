@@ -31,18 +31,23 @@ public class WayPoints : MonoBehaviour
         if(currentWaypoint == null){
             return transform.GetChild(0);
         }
-        currentWaypointGlobal = currentWaypoint;
+        
         if (currentWaypoint.GetSiblingIndex() < transform.childCount - 1)
         {
+            currentWaypointGlobal = currentWaypoint;
             return transform.GetChild(currentWaypoint.GetSiblingIndex() + 1);
+            
         }
         else
         {
+            currentWaypointGlobal = currentWaypoint;
             return transform.GetChild(0);
+            
         }
     }
 
     public bool IsLastWaypoint(){
+        //Debug.Log(currentWaypointGlobal);
         if(currentWaypointGlobal.GetSiblingIndex() == transform.childCount - 1)
         {
             return true;

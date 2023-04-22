@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class EstanteriaScript : MonoBehaviour
 {
-    public  GameObject otherObject;
+    public GameObject playerObject;
     public WayPoints waypointsToThis;
+    public string nombreItem;
+    public int idItem;
     private WaypointMover waypointMover;
+    private Item elItem;
     
 
     // Start is called before the first frame update
     void Start()
     {
-        waypointMover = otherObject.GetComponent<WaypointMover>();
+        waypointMover = playerObject.GetComponent<WaypointMover>();
        
     }
 
@@ -23,8 +26,10 @@ public class EstanteriaScript : MonoBehaviour
     }
 
     void OnMouseDown(){
-        otherObject.GetComponent<WaypointMover>().waypoints = waypointsToThis;
+        playerObject.GetComponent<WaypointMover>().waypoints = waypointsToThis;
         waypointMover.enabled = true;
+        elItem = new Item(nombreItem, idItem);
+        playerObject.GetComponent<PlayerScript>().SetItem(elItem);
         //Debug.Log("CLIC");
     }
 }

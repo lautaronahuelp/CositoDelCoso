@@ -27,10 +27,15 @@ public class PlayerScript : MonoBehaviour
 {
     public static int slotsNumber = 2;
     private int slotsLength = 0;
-    public GameObject mesaDePedidos, itemDePedido;
+    public GameObject mesaDePedidos, itemDePedido, filaDeClientes;
     private GameObject newItem;
     private Item[] slots = new Item[2];
     private int[] itemsRendereados = new int[slotsNumber];
+
+    private bool pedidoEnCurso = false;
+    private Pedido pedidoActual;
+
+    private int estres = 50;
     
     // Start is called before the first frame update
     void Start()
@@ -43,6 +48,25 @@ public class PlayerScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {
+        RenderSlots();
+
+        ObtenerPedido();
+
+        Debug.Log(ChequeaPedido());
+        
+        //Debug.Log(pedidoActual.pedido[0]);
+        //Debug.Log(pedidoActual.pedido[1]);
+        
+        
+    }
+
+    public void SetItem(Item unItem)
+    {
+        if(slotsLength < slotsNumber) slots[slotsLength++] = unItem;  
+    }
+
+    private void RenderSlots()
     {
         bool rendereado;
         for (int i = 0; i < mesaDePedidos.transform.childCount; i++){
@@ -60,15 +84,29 @@ public class PlayerScript : MonoBehaviour
                 }
             }
         }
-        
-        
-        
-        
     }
 
-    public void SetItem(Item unItem)
+    private void ObtenerPedido()
     {
-        if(slotsLength < slotsNumber) slots[slotsLength++] = unItem;  
+        Transform unCliente = filaDeClientes.transform.GetChild(0);
+        if(!pedidoEnCurso){
+            pedidoActual = unCliente.GetComponent<CompradorScript>().GetPedido();
+            unCliente.GetComponent<CompradorScript>().MostrarSolicitud();
+            pedidoEnCurso = true;
+
+        }
+    }
+
+    private bool ChequeaPedido()
+    {
+        if(pedidoActual.pedido[0] == slots[0].itemType && pedidoActual.pedido[1] == slots[1].itemType)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 }

@@ -26,16 +26,12 @@ public class Item {
 public class PlayerScript : MonoBehaviour
 {
     public static int slotsNumber = 2;
-    private int slotsLength = 0;
     public GameObject mesaDePedidos, itemDePedido, filaDeClientes;
-    private GameObject newItem;
-    private Item[] slots = new Item[2];
-    private int[] itemsRendereados = new int[slotsNumber];
 
     private bool pedidoEnCurso = false;
     private Pedido pedidoActual;
 
-    private int estres = 50;
+    //private int estres = 50;
     
     // Start is called before the first frame update
     void Start()
@@ -49,11 +45,11 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RenderSlots();
+
 
         ObtenerPedido();
 
-        Debug.Log(ChequeaPedido());
+        
         
         //Debug.Log(pedidoActual.pedido[0]);
         //Debug.Log(pedidoActual.pedido[1]);
@@ -63,28 +59,18 @@ public class PlayerScript : MonoBehaviour
 
     public void SetItem(Item unItem)
     {
-        if(slotsLength < slotsNumber) slots[slotsLength++] = unItem;  
-    }
-
-    private void RenderSlots()
-    {
-        bool rendereado;
-        for (int i = 0; i < mesaDePedidos.transform.childCount; i++){
-            itemsRendereados[i] = mesaDePedidos.transform.GetChild(i).GetComponent<ItemDePedidoScript>().id;
+        GameObject newItem;
+   
+        if(mesaDePedidos.transform.childCount < slotsNumber)
+        {
+            newItem = Instantiate(itemDePedido, mesaDePedidos.transform);
+            newItem.GetComponent<ItemDePedidoScript>().SetItem(unItem.itemName, unItem.itemType, unItem.itemId, gameObject);
+            newItem.transform.position = mesaDePedidos.transform.position;
         }
         
-        foreach(Item unItem in slots){
-            if(unItem != null){
-                rendereado = System.Array.IndexOf(itemsRendereados, unItem.itemId) > -1 ? true : false;
 
-                if(!rendereado){
-                    newItem = Instantiate(itemDePedido, mesaDePedidos.transform);
-                    newItem.GetComponent<ItemDePedidoScript>().SetItem(unItem.itemName, unItem.itemType, unItem.itemId);
-                    newItem.transform.position = mesaDePedidos.transform.position;
-                }
-            }
-        }
     }
+
 
     private void ObtenerPedido()
     {
@@ -97,16 +83,37 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-    private bool ChequeaPedido()
+    private int ChequeaPedido()
     {
-        if(pedidoActual.pedido[0] == slots[0].itemType && pedidoActual.pedido[1] == slots[1].itemType)
+        int[] elegidos = {-1, -1};
+        int count = 0;
+        for (int i = 0; i < mesaDePedidos.transform.childCount; i++)
         {
-            return true;
+            elegidos[i] = mesaDePedidos.transform.GetChild(i).GetComponent<ItemDePedidoScript>().type;
         }
-        else
+
+        for (int i = 0; i < slotsNumber; i++)
         {
-            return false;
+            if(System.Array.IndexOf(elegidos, pedidoActual.pedido[i]) > -1) count++;
         }
+
+        return count;
+    
     }
+
+
+
+    public void EntregaPedido()
+    {
+        //Debug.Log("PEDIDO ENTREGADO");
+        Debug.Log(ChequeaPedido());
+    }
+
+    public void EliminaItem(int id)
+    {
+     
+    }
+
+    
 
 }

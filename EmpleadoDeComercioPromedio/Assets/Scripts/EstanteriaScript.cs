@@ -28,8 +28,15 @@ public class EstanteriaScript : MonoBehaviour
     void OnMouseDown(){
         playerObject.GetComponent<WaypointMover>().waypoints = waypointsToThis;
         waypointMover.enabled = true;
-        elItem = new Item(nombreItem, idItem);
-        playerObject.GetComponent<PlayerScript>().SetItem(elItem);
+        //elItem = new Item(nombreItem, idItem);
+        //playerObject.GetComponent<PlayerScript>().SetItem(elItem);
         //Debug.Log("CLIC");
+    }
+
+    void OnTriggerEnter(Collider player)
+    {
+        elItem = new Item(nombreItem, idItem);
+        //player.gameObject.GetComponentInParent<PlayerScript>().SetItem(elItem);
+        Debug.Log("COLLISION");
     }
 }

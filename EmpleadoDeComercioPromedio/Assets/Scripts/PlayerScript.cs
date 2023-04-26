@@ -60,12 +60,15 @@ public class PlayerScript : MonoBehaviour
     public void SetItem(Item unItem)
     {
         GameObject newItem;
+        //Vector3 posicionRelativa;
    
         if(mesaDePedidos.transform.childCount < slotsNumber)
         {
             newItem = Instantiate(itemDePedido, mesaDePedidos.transform);
             newItem.GetComponent<ItemDePedidoScript>().SetItem(unItem.itemName, unItem.itemType, unItem.itemId, gameObject);
-            newItem.transform.position = mesaDePedidos.transform.position;
+            //posicionRelativa = mesaDePedidos.transform.childCount > 1 ? new Vector3(55.5f, 0, 0) : new Vector3(55.5f, 18, 0);
+            //HACER REPOSICIONAMIENTO EN LA MESA DE PEDIDOS
+            //newItem.transform.position = mesaDePedidos.transform.position + posicionRelativa;
         }
         
 

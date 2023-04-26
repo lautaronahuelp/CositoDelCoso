@@ -36,7 +36,7 @@ public class EstanteriaScript : MonoBehaviour
     void OnTriggerEnter(Collider player)
     {
         elItem = new Item(nombreItem, idItem);
-        //player.gameObject.GetComponentInParent<PlayerScript>().SetItem(elItem);
-        Debug.Log("COLLISION");
+        player.gameObject.GetComponentInParent<PlayerScript>().SetItem(elItem);
+        //Debug.Log("COLLISION");
     }
 }

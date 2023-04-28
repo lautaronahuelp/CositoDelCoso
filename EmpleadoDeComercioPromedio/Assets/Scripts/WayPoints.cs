@@ -28,6 +28,7 @@ public class WayPoints : MonoBehaviour
 
     public Transform GetNextWaypoint(Transform currentWaypoint)
     {
+        Debug.Log("getnextwaypoint");
         if(currentWaypoint == null){
             return transform.GetChild(0);
         }

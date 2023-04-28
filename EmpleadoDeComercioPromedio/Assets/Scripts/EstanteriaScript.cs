@@ -10,13 +10,14 @@ public class EstanteriaScript : MonoBehaviour
     public int idItem;
     private WaypointMover waypointMover;
     private Item elItem;
+    private AudioSource audioSource;
     
 
     // Start is called before the first frame update
     void Start()
     {
         waypointMover = playerObject.GetComponent<WaypointMover>();
-       
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -26,17 +27,14 @@ public class EstanteriaScript : MonoBehaviour
     }
 
     void OnMouseDown(){
-        playerObject.GetComponent<WaypointMover>().waypoints = waypointsToThis;
-        waypointMover.enabled = true;
-        //elItem = new Item(nombreItem, idItem);
-        //playerObject.GetComponent<PlayerScript>().SetItem(elItem);
-        //Debug.Log("CLIC");
+        playerObject.GetComponent<WaypointMover>().Camina(waypointsToThis);
+        //waypointMover.enabled = true;
+        
     }
 
     void OnTriggerEnter(Collider player)
     {
         elItem = new Item(nombreItem, idItem);
-        player.gameObject.GetComponentInParent<PlayerScript>().SetItem(elItem);
-        //Debug.Log("COLLISION");
+        if(player.gameObject.GetComponentInParent<PlayerScript>().SetItem(elItem)) audioSource.Play();
     }
 }

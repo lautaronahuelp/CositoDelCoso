@@ -609,7 +609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 105327463}
   waypointsToThis: {fileID: 642794803}
-  nombreItem: Cable
+  nombreItem: Pintura
   idItem: 6
 --- !u!65 &191576779
 BoxCollider:
@@ -5216,7 +5216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 105327463}
   waypointsToThis: {fileID: 1558243971}
-  nombreItem: Tubo
+  nombreItem: Clavos
   idItem: 5
 --- !u!65 &1217572053
 BoxCollider:
@@ -5625,7 +5625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 105327463}
   waypointsToThis: {fileID: 1559584823}
-  nombreItem: Aceite
+  nombreItem: Madera
   idItem: 4
 --- !u!65 &1265255975
 BoxCollider:
@@ -7643,7 +7643,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 105327463}
   waypointsToThis: {fileID: 1967252730}
-  nombreItem: Tabla
+  nombreItem: "Tefl\xF3n"
   idItem: 2
 --- !u!65 &1726682314
 BoxCollider:
@@ -8366,7 +8366,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unComprador: {fileID: 8201830449183188634, guid: ac45a53faee9ca3419a097aa22d2221d, type: 3}
-  newComprador: {fileID: 0}
   waypointsCompradores:
   - {fileID: 1344586146}
   - {fileID: 1072089166}
@@ -8378,6 +8377,53 @@ MonoBehaviour:
   - {fileID: 1034146984}
   - {fileID: 1469135041}
   - {fileID: 1978722439}
+  listaDePedidos: []
+  tiempoSpawneo: 10
+  largoFila: 7
+  nombres:
+  - 'Dra. Solemne '
+  - "Do\xF1a Norma "
+  - 'Don Selaar '
+  - "Padre Luch\xF3n "
+  - 'Pibe Cantina '
+  - 'Cliente Irregular '
+  texto1:
+  - "Hola Armando. \xBFSab\xE9s que ando necesitando el cosito ese para que frene
+    el \u201Ctuc-tuc\u201D de gotitas a la noche y me deje dormir en paz? Vengo de
+    una guardia de 83 horas de corrido\u2026 "
+  - "Buenas tardes, joven. El Florencio no para de molestar y yo no quiero que duerma
+    conmigo porque me llena todo de pelo. \xBFCon qu\xE9 le puedo armar una cucha?"
+  - "\xBFQu\xE9 d\xEDa hoy, no? Vos por suerte ten\xE9s laburo. Ten\xE9s que agradecer
+    eso. Yo en cambio desde que me jubil\xE9 me estoy pegando un embole b\xE1rbaro.
+    Ni siquiera puedo juntarme a jugar al ajedrez porque el boludo de mi vecino perdi\xF3
+    el tablero..."
+  - "No, no. Te dije que no puedo ma\xF1ana. Te dejo porque entr\xE9 a la ferreter\xEDa,
+    Alberto. Hola! Mi hijo me pidi\xF3 un mu\xF1eco del villano pelado de la peli
+    esa que Brendan Fraser est\xE1 en el desierto, y ya cerraron las jugueter\xEDas.
+    \xBFTen\xE9s algo que me sirva para armarlo yo?"
+  - "\xA1Hola! Te hago una consulta. Tengo una cita esta noche con un wacho re lindo
+    y quiero ponerle onda a mi cuarto. Corte telo, \xBFviste? \xBFQu\xE9 se te ocurre?"
+  - "\xBFQu\xE9 hac\xE9\u2019 maestro? Pasa que la lamparita que me vendiste el otro
+    d\xEDa para el patio no es tan potente y yo necesito m\xE1s potencia porque es
+    grande el patio, \xBFviste? \xBFQu\xE9 ten\xE9s que sea m\xE1s potente?"
+  texto2:
+  - "No era una sola, eran dos las que perd\xEDan."
+  - "Hizo berrinche y la rompi\xF3. Voy a hacerle otra."
+  - "No me la vas a creer\u2026 Ahora lo perd\xED yo\u2026 \xBFMe dar\xEDas lo que
+    necesito para hacer otro?"
+  - "Esper\xE1 un cachito que ya llegu\xE9 a la ferreter\xEDa de nuevo\u2026 Se puso
+    celoso hermanito, as\xED que le voy a tener que hacer uno a \xE9l."
+  - "\xA1Hola de nuevo! \xBFMe puedo llevar una de repuesto, por las dudas?"
+  - "\xA1Capo! Perd\xF3n que te joda, pero necesito el doble de potencia."
+  texto3:
+  - "\xA1Hola! Eran tres."
+  - "\xA1Hola! La tercera es la vencida."
+  - "Te juro que me da verg\xFCenza pedirte otro..."
+  - El del medio ahora quiere lo mismo...
+  - "\xA1Hola una vez m\xE1s! Por las dudassss..."
+  - "\xA1DAME M\xC1S POTENCIA, M\xC1QUINA!"
+  item1: 010000000400000004000000040000000300000003000000
+  item2: 020000000500000006000000020000000600000003000000
 --- !u!1 &1957908249
 GameObject:
   m_ObjectHideFlags: 0
@@ -8429,7 +8475,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 105327463}
   waypointsToThis: {fileID: 640876790}
-  nombreItem: Metal
+  nombreItem: Lamparita
   idItem: 3
 --- !u!65 &1957908252
 BoxCollider:
@@ -8758,7 +8804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerObject: {fileID: 105327463}
   waypointsToThis: {fileID: 2123602050}
-  nombreItem: Tornillo
+  nombreItem: Cuerito
   idItem: 1
 --- !u!82 &1970818999
 AudioSource:

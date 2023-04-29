@@ -9,6 +9,7 @@ public class Item {
     public int itemId;
     private static int UltId;
 
+
     public Item(string ina, int ity)
     {
         itemName = ina;
@@ -28,8 +29,11 @@ public class PlayerScript : MonoBehaviour
     public static int slotsNumber = 2;
     public GameObject mesaDePedidos, itemDePedido, filaDeClientes;
 
-    private bool pedidoEnCurso = false;
+    private Transform unCliente;
+    //private bool pedidoEnCurso = false;
     private Pedido pedidoActual;
+
+    private string atendiendo;
 
     //private int estres = 50;
     
@@ -45,9 +49,7 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-        ObtenerPedido();
+        if(filaDeClientes.transform.childCount > 0) ObtenerPedido();
 
         
         
@@ -79,11 +81,12 @@ public class PlayerScript : MonoBehaviour
 
     private void ObtenerPedido()
     {
-        Transform unCliente = filaDeClientes.transform.GetChild(0);
-        if(!pedidoEnCurso){
+       // Debug.Log("busca pedido");
+        unCliente = filaDeClientes.transform.GetChild(0);
+        if(!unCliente.GetComponent<CompradorScript>().Entrego()){
             pedidoActual = unCliente.GetComponent<CompradorScript>().GetPedido();
             unCliente.GetComponent<CompradorScript>().MostrarSolicitud();
-            pedidoEnCurso = true;
+            atendiendo = unCliente.GetComponent<CompradorScript>().GetNombre();
 
         }
     }
@@ -101,7 +104,8 @@ public class PlayerScript : MonoBehaviour
         {
             if(System.Array.IndexOf(elegidos, pedidoActual.pedido[i]) > -1) count++;
         }
-
+        
+        
         return count;
     
     }
@@ -111,7 +115,14 @@ public class PlayerScript : MonoBehaviour
     public void EntregaPedido()
     {
         //Debug.Log("PEDIDO ENTREGADO");
+        int conteo = mesaDePedidos.transform.childCount;
+
         Debug.Log(ChequeaPedido());
+        unCliente.GetComponent<CompradorScript>().Irse();
+        
+        //while(mesaDePedidos.transform.childCount == conteo);
+        
+
     }
 
     public void EliminaItem(int id)

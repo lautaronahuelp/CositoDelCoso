@@ -24,12 +24,16 @@ public class CompradorScript : MonoBehaviour
     [SerializeField] private float distanceThreshold = 0.1f;
     //public Transform puntoDeMira;
     private Transform currentWaypoint;
+    public string nombre;
+    private bool entrego = false;
+    
+
     
     // Start is called before the first frame update
     void Start()
     {
-        //transform.position = new Vector3(-29.5699997f, -0.629999995f,-1.22000003f);
-        elPedido = new Pedido(1, 2, "Necesito un firulete para sostener la repisa contra la pared. Me pregunto si en el bazar de enfrente venden repisas...");
+        
+        
         
         currentWaypoint = waypoints.GetNextWaypoint(currentWaypoint);
         transform.position = currentWaypoint.position;
@@ -45,22 +49,14 @@ public class CompradorScript : MonoBehaviour
         
     }
 
-    /*public void SetWaypoints(WayPoints wp)
-    {
-        waypoints = wp;
-    }*/
-
     public void Avanzar()
     {
-            Debug.Log("AVANZAR");
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.position, moveSpeed * Time.deltaTime);
-            //Debug.Log(Vector3.Distance(transform.position, currentWaypoint.position) < distanceThreshold);
+            
             if(Vector3.Distance(transform.position, currentWaypoint.position) < distanceThreshold)
             {
-                Debug.Log("AVANZAR IF IN");
                 currentWaypoint = waypoints.GetNextWaypoint(currentWaypoint);
                 transform.LookAt(currentWaypoint);
-                
             }
         
             /*if(waypoints.IsLastWaypoint()){
@@ -71,14 +67,40 @@ public class CompradorScript : MonoBehaviour
             }*/
     }
 
+    public void SetComprador(int i1, int i2, string tx, string nm)
+    {
+
+        nombre = nm;
+
+        elPedido = new Pedido(i1, i2, tx);
+    }
+
     public Pedido GetPedido()
     {
+        entrego = true;
         return elPedido;
+    }
+
+    public bool Entrego()
+    {
+        return entrego;
+    }
+
+    public string GetNombre()
+    {
+        return nombre;
     }
     
     public void MostrarSolicitud()
     {
-        Debug.Log(elPedido.solicitud);
+        Debug.Log(nombre + ": " + elPedido.solicitud);
+    }
+
+    public void Irse()
+    {
+        Destroy(gameObject);
+        Debug.Log("AH RE QUE SE IBA");
+        
     }
 
 }

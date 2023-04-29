@@ -28,7 +28,6 @@ public class WayPoints : MonoBehaviour
 
     public Transform GetNextWaypoint(Transform currentWaypoint)
     {
-        Debug.Log("getnextwaypoint");
         if(currentWaypoint == null){
             return transform.GetChild(0);
         }
@@ -48,7 +47,6 @@ public class WayPoints : MonoBehaviour
     }
 
     public bool IsLastWaypoint(){
-        //Debug.Log(currentWaypointGlobal);
         if(currentWaypointGlobal.GetSiblingIndex() == transform.childCount - 1)
         {
             return true;

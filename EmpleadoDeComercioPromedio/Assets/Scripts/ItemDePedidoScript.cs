@@ -11,17 +11,17 @@ public class ItemDePedidoScript : MonoBehaviour
     public GameObject player;
     public AudioClip clip;
     public float volumen = 1f;
-    private TMP_Text mText;
+    private TMP_Text texto;
     // Start is called before the first frame update
     void Start()
     {
-        mText = gameObject.GetComponent<TMP_Text>();
+        texto = gameObject.GetComponent<TMP_Text>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        mText.text = itemName;
+        texto.text = itemName;
     }
 
     public void SetItem(string n, int t, int i, GameObject pl)
@@ -33,7 +33,6 @@ public class ItemDePedidoScript : MonoBehaviour
     }
 
     public void EliminaItem(){
-        Debug.Log("ELIMINAR");
         AudioSource.PlayClipAtPoint(clip, new Vector3(-13.84000015258789f, 0.21999996900558473f, -1.9800000190734864f), volumen);
         Destroy(gameObject);
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Pedido {
     public int[] pedido = new int[2];
@@ -19,13 +20,18 @@ public class CompradorScript : MonoBehaviour
 {
     private Pedido elPedido;
 
-    [SerializeField] public WayPoints waypoints;
+    [SerializeField] public WayPoints waypointsEntrada;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float distanceThreshold = 0.1f;
-    //public Transform puntoDeMira;
+    public Transform puntoDeMira;
     private Transform currentWaypoint;
     public string nombre;
     private bool entrego = false;
+
+    public Transform cuadroDialogo;
+    private TMP_Text textoDialogo;
+
+    private int pasitos = 0;
     
 
     
@@ -34,10 +40,11 @@ public class CompradorScript : MonoBehaviour
     {
         
         
-        
-        currentWaypoint = waypoints.GetNextWaypoint(currentWaypoint);
+        textoDialogo = cuadroDialogo.GetComponent<TMP_Text>();
+        currentWaypoint = waypointsEntrada.GetNextWaypoint(currentWaypoint);
         transform.position = currentWaypoint.position;
         transform.LookAt(currentWaypoint);
+        
         
         
     }
@@ -45,8 +52,12 @@ public class CompradorScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Avanzar();
         
+        if(pasitos < 2)
+        {
+            Avanzar();
+            
+        }
     }
 
     public void Avanzar()
@@ -55,15 +66,16 @@ public class CompradorScript : MonoBehaviour
             
             if(Vector3.Distance(transform.position, currentWaypoint.position) < distanceThreshold)
             {
-                currentWaypoint = waypoints.GetNextWaypoint(currentWaypoint);
+                currentWaypoint = waypointsEntrada.GetNextWaypoint(currentWaypoint);
                 transform.LookAt(currentWaypoint);
+                pasitos++;
             }
         
-            /*if(waypoints.IsLastWaypoint()){
+            /*if(waypointsEntrada.IsLastWaypoint()){
                 //GetComponent<AudioSource>().Stop();
                 //estaCaminando = false;
 
-                transform.LookAt(puntoDeMira);
+                transform.LookAt(new Vector3(-12, -0, -0));
             }*/
     }
 
@@ -93,13 +105,13 @@ public class CompradorScript : MonoBehaviour
     
     public void MostrarSolicitud()
     {
-        Debug.Log(nombre + ": " + elPedido.solicitud);
+        textoDialogo.text = nombre + ": " + elPedido.solicitud;
     }
 
     public void Irse()
     {
         Destroy(gameObject);
-        Debug.Log("AH RE QUE SE IBA");
+        //Debug.Log("AH RE QUE DESAPARECIA");
         
     }
 

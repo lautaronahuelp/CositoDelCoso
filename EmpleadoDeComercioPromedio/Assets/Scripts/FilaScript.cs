@@ -8,9 +8,15 @@ public class FilaScript : MonoBehaviour
     private GameObject newComprador;
     public WayPoints[] waypointsCompradores;
     public GameObject[] listaDePedidos;
+    public Transform player;
+    public Transform cuadroDialogo;
     public float tiempoSpawneo;
     public int largoFila;
+    private int spawneados = 0;
     private float tiempoRestante;
+
+    private int randomNumber;
+    public int maxAttempts;
 
     public string[] nombres;
     public string[] texto1;
@@ -19,6 +25,7 @@ public class FilaScript : MonoBehaviour
     public int[] item1;
     public int[] item2;
     private int[] conteo = new int[]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+
 
     
     // Start is called before the first frame update
@@ -39,17 +46,29 @@ public class FilaScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(tiempoRestante > 0)
+        if(!PasaronTodos())
         {
-            tiempoRestante -= Time.deltaTime;
+
+            if(tiempoRestante > 0)
+            {
+                tiempoRestante -= Time.deltaTime;
+            }
+            else
+            {
+                tiempoRestante = tiempoSpawneo;
+                if(spawneados < largoFila)
+                {
+                    //Debug.Log("PASA A SPAWNEAR");
+                    spawneados++;
+                    SpawneaComprador();
+                }
+
+            }
         }
         else
         {
-            tiempoRestante = tiempoSpawneo;
-            if(transform.childCount < largoFila - 1)//ESTE -1 EVITA QUE SE TILDE. NO TENGO EXPLICACION, PERO FUNCIONA. ALGUN DIA SABRE QUE PASO.
-            {
-                Debug.Log("PASA A SPAWNEAR");
-                SpawneaComprador();
+            if(transform.childCount == 0) {
+                player.GetComponent<PlayerScript>().FinalDelJuego();
             }
         }
     }
@@ -57,32 +76,81 @@ public class FilaScript : MonoBehaviour
     private void SpawneaComprador()
     {
         int ordenDeComprador;
-        Debug.Log("ENTRO A SPAWNEAR");
-        do
+    
+      
+        //ordenDeComprador = Random.Range(1, largoFila);
+        ordenDeComprador = Random.Range(0, largoFila);
+      
+        for(int i=0; HayConteosMenores(ordenDeComprador) && i < maxAttempts && ExisteEnFila(nombres[ordenDeComprador]); i++)
+        {
+         
+            ordenDeComprador = Random.Range(0, largoFila);
+             
+        }
+        /*do
+        {
+             ordenDeComprador = Random.Range(0, largoFila);
+        }
+        while(HayConteosMenores(ordenDeComprador) && ExisteEnFila(nombres[ordenDeComprador]))
+        */
+
+        //Debug.Log(">>"/*+ HayConteosMenores(ordenDeComprador)+ */+"orden: "+ordenDeComprador);
+
+        /*while(HayConteosMenores(ordenDeComprador)){
+            ordenDeComprador = Random.Range(0, (largoFila - 1));
+        }
+        /*do
         {
             ordenDeComprador = Random.Range(0, (largoFila - 1));
             Debug.Log("ITERA:"+ordenDeComprador);
         } 
-        while(HayConteosMenores(conteo[ordenDeComprador], ordenDeComprador));
-
-        Debug.Log("PASA DO-WHILE");
+        while(HayConteosMenores(ordenDeComprador));*/
+        
+    
         //SetComprador(int i1, int i2, string tx, string nm)
-
-        newComprador = Instantiate(unComprador, transform);
-        newComprador.GetComponent<CompradorScript>().SetComprador(item1[ordenDeComprador],item2[ordenDeComprador], EligeTexto(ordenDeComprador, conteo[ordenDeComprador]), nombres[ordenDeComprador]);
-        newComprador.GetComponent<CompradorScript>().waypoints = waypointsCompradores[0];
-        conteo[ordenDeComprador]++;
+        if(!ExisteEnFila(nombres[ordenDeComprador]) && transform.childCount < 1)
+        {
+            newComprador = Instantiate(unComprador, transform);
+            newComprador.GetComponent<CompradorScript>().SetComprador(item1[ordenDeComprador],item2[ordenDeComprador], EligeTexto(ordenDeComprador, conteo[ordenDeComprador]), nombres[ordenDeComprador]);
+            newComprador.GetComponent<CompradorScript>().waypointsEntrada = waypointsCompradores[0];
+            newComprador.GetComponent<CompradorScript>().cuadroDialogo = cuadroDialogo;
+            conteo[ordenDeComprador]++;
+        }
+        
+        //Debug.Log("conteos:"+conteo[0]+ "|"+conteo[1]);
     }
 
-    private bool HayConteosMenores(int cn, int ord)
+    private bool HayConteosMenores(int ord)
+    {
+        //Debug.Log(">>ENTRACONTEOSMENORES");
+        bool band = false;
+        for(int i = 0; i < largoFila; i++)
+        {
+            //Debug.Log(">>i: "+i);
+            if(i != ord)
+            {
+                if(conteo[i] < conteo[ord]) band = true;
+            }
+        }
+
+        return band;
+    }
+
+    private bool ExisteEnFila(string nm)
+    {
+        for(int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).GetComponent<CompradorScript>().GetNombre() == nm) return true;
+        }
+        return false;
+    }
+    private bool PasaronTodos()
     {
         for(int i = 0; i < largoFila; i++)
         {
-            if(i == ord) continue;
-            if(conteo[i] < cn) return true;
+                if(conteo[i] < 3) return false;
         }
-
-        return false;
+        return true;
     }
 
     private string EligeTexto(int odc, int cnt)
@@ -98,5 +166,9 @@ public class FilaScript : MonoBehaviour
             default:
                 return texto1[odc];
         }
+    }
+    
+    public void SeVaUno(){
+        spawneados--;
     }
 }

@@ -20,7 +20,7 @@ public class mesaDePedidosScript : MonoBehaviour
     void ReposicionaHijos()
     {
        
-        Vector3[] posicionEnLista = {transform.position + new Vector3(170f, 18, 0), transform.position + new Vector3(170f, -50, 0)};
+        Vector3[] posicionEnLista = {transform.position + new Vector3(40f, 9, 0), transform.position + new Vector3(40f, -15, 0)};
         if(transform.childCount != conteo)
         {
             for(int i = 0; i < transform.childCount; i++)

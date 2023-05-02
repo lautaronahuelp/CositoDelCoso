@@ -48,6 +48,7 @@ public class PlayerScript : MonoBehaviour
     public float aumentoEstresPedidoErroneo;
 
     public float tiempoRestante;
+    private float sumaDeTiempo;
     
     // Start is called before the first frame update
     void Start()
@@ -68,7 +69,7 @@ public class PlayerScript : MonoBehaviour
         if(filaDeClientes.transform.childCount > 0) ObtenerPedido();
         PasaTiempo();
         AumentaEstresPorTiempo();
-        MuestraTiempo(tiempoRestante);
+        MuestraTiempo(sumaDeTiempo);
         MuestraEstres();
         
         
@@ -131,9 +132,9 @@ public class PlayerScript : MonoBehaviour
 
     private void PasaTiempo()
     {
-        if(tiempoRestante > 0)
+        if( sumaDeTiempo < tiempoRestante)
         {
-            tiempoRestante -= Time.deltaTime;
+            sumaDeTiempo += Time.deltaTime;
         }
         else
         {
@@ -143,7 +144,7 @@ public class PlayerScript : MonoBehaviour
 
     private void AumentaEstresPorTiempo()
     {
-        if(tiempoAumentaEstresRest > 0)
+        /*if(tiempoAumentaEstresRest > 0)
         {
             tiempoAumentaEstresRest -= Time.deltaTime;
         }
@@ -151,7 +152,7 @@ public class PlayerScript : MonoBehaviour
         {
             AumentaEstres(aumentoEstres);
             tiempoAumentaEstresRest = tiempoAumentaEstres;
-        }
+        }*/
     }
 
     private void AumentaEstres(float aum)
@@ -168,10 +169,24 @@ public class PlayerScript : MonoBehaviour
 
     private void MuestraTiempo(float tiempoEnPantalla)
     {
+    
+        float minTot = 60f - (float)(int)(tiempoRestante / 60);
+        
+        float horTot = 17f;
         tiempoEnPantalla += 1;
         float minutos = Mathf.FloorToInt(tiempoEnPantalla / 60); 
         float segundos = Mathf.FloorToInt(tiempoEnPantalla % 60);
-        textoTiempo.text = string.Format("{0:00}:{1:00}", minutos, segundos);
+        minTot += minutos;
+        
+
+        if( minTot == 60 ) 
+        {
+            minTot = 0;
+            horTot = 18;
+        }
+        if( segundos == 60 ) segundos = 0;
+        
+        textoTiempo.text = string.Format("{0:00}:{1:00}:{2:00}", horTot, minTot, segundos );
     }
 
     private void MuestraEstres()
@@ -184,6 +199,7 @@ public class PlayerScript : MonoBehaviour
     {
         //Debug.Log("PEDIDO ENTREGADO");
         int conteo = mesaDePedidos.transform.childCount;
+
         int estadoPedido = ChequeaPedido();
         if(estres > 0 ) estres -= (reduccionEstres * estadoPedido);
         if(estres < 0) estres = 0;

@@ -12,7 +12,6 @@ public class FilaScript : MonoBehaviour
     public Transform cuadroDialogo;
     public float tiempoSpawneo;
     public int largoFila;
-    private int spawneados = 0;
     private float tiempoRestante;
 
     private int randomNumber;
@@ -56,10 +55,10 @@ public class FilaScript : MonoBehaviour
             else
             {
                 tiempoRestante = tiempoSpawneo;
-                if(spawneados < largoFila)
+                if(transform.childCount < largoFila)
                 {
                     //Debug.Log("PASA A SPAWNEAR");
-                    spawneados++;
+                    
                     SpawneaComprador();
                 }
 
@@ -87,7 +86,8 @@ public class FilaScript : MonoBehaviour
             ordenDeComprador = Random.Range(0, largoFila);
              
         }
-        /*do
+        /*
+        do
         {
              ordenDeComprador = Random.Range(0, largoFila);
         }
@@ -108,7 +108,7 @@ public class FilaScript : MonoBehaviour
         
     
         //SetComprador(int i1, int i2, string tx, string nm)
-        if(!ExisteEnFila(nombres[ordenDeComprador]) && transform.childCount < 1)
+        if(!ExisteEnFila(nombres[ordenDeComprador]) /*&& transform.childCount < 1*/)
         {
             newComprador = Instantiate(unComprador, transform);
             newComprador.GetComponent<CompradorScript>().SetComprador(item1[ordenDeComprador],item2[ordenDeComprador], EligeTexto(ordenDeComprador, conteo[ordenDeComprador]), nombres[ordenDeComprador]);
@@ -117,7 +117,8 @@ public class FilaScript : MonoBehaviour
             conteo[ordenDeComprador]++;
         }
         
-        //Debug.Log("conteos:"+conteo[0]+ "|"+conteo[1]);
+        Debug.Log("conteos:"+conteo[0]+ "|"+conteo[1]+ "|"+conteo[2]+ "|"+conteo[3]+ "|"+conteo[4]+ "|"+conteo[5]);
+        
     }
 
     private bool HayConteosMenores(int ord)
@@ -169,6 +170,7 @@ public class FilaScript : MonoBehaviour
     }
     
     public void SeVaUno(){
-        spawneados--;
+        
+        Debug.Log("spawneados:"+transform.childCount);
     }
 }

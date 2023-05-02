@@ -9807,7 +9807,7 @@ PrefabInstance:
       objectReference: {fileID: 1941407421}
     - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
       propertyPath: tiempoRestante
-      value: 300
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
       propertyPath: tiempoAumentaEstres

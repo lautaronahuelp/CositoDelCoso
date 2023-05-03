@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Item {
     public string itemName;
@@ -32,6 +33,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject mesaDePedidos, itemDePedido, filaDeClientes;
     public Transform cuadroTiempo;
     public Transform cuadroEstres;
+    public Button botonEntrega;
     private TMP_Text textoTiempo;
     private TMP_Text textoEstres;
     private Transform unCliente;
@@ -40,12 +42,12 @@ public class PlayerScript : MonoBehaviour
 
     private string atendiendo;
 
-    private float estres = 50;
-    public float reduccionEstres = 10;
+    public float estresInicial;
     public float tiempoAumentaEstres;
     private float tiempoAumentaEstresRest;
-    public float aumentoEstres;
+    public float aumentoEstresXTiempo;
     public float aumentoEstresPedidoErroneo;
+    public float reduccionEstresPedidoCorrecto;
 
     public float tiempoRestante;
     private float sumaDeTiempo;
@@ -101,9 +103,12 @@ public class PlayerScript : MonoBehaviour
 
     private void ObtenerPedido()
     {
-       // Debug.Log("busca pedido");
         unCliente = filaDeClientes.transform.GetChild(0);
-        if(!unCliente.GetComponent<CompradorScript>().Entrego()){
+        bool clienteListo = unCliente.GetComponent<CompradorScript>().ListoParaCompra();
+        
+        //Debug.Log("OBTENER PEDIDO "+!unCliente.GetComponent<CompradorScript>().Entrego()+"|"+unCliente.GetComponent<CompradorScript>().ListoParaCompra());
+        if(clienteListo) botonEntrega.interactable = true;
+        if(!unCliente.GetComponent<CompradorScript>().Entrego() && clienteListo){
             pedidoActual = unCliente.GetComponent<CompradorScript>().GetPedido();
             unCliente.GetComponent<CompradorScript>().MostrarSolicitud();
             atendiendo = unCliente.GetComponent<CompradorScript>().GetNombre();
@@ -157,13 +162,20 @@ public class PlayerScript : MonoBehaviour
 
     private void AumentaEstres(float aum)
     {
-        if(estres < 100) estres += aum;
-        if(estres > 100)
+        if(estresInicial < 100) estresInicial += aum;
+        if(estresInicial > 100)
         {
             
-            estres = 100;
+            estresInicial = 100;
         }
-        if(estres >= 100) FinalDelJuego();
+        if(estresInicial >= 100) FinalDelJuego();
+    }
+
+     private void ReduceEstres(float red)
+    {
+        if(estresInicial > 0) estresInicial -= red;
+        if(estresInicial < 0) estresInicial = 0;
+    
     }
     
 
@@ -173,7 +185,7 @@ public class PlayerScript : MonoBehaviour
         float minTot = 60f - (float)(int)(tiempoRestante / 60);
         
         float horTot = 17f;
-        tiempoEnPantalla += 1;
+        //tiempoEnPantalla += 1;
         float minutos = Mathf.FloorToInt(tiempoEnPantalla / 60); 
         float segundos = Mathf.FloorToInt(tiempoEnPantalla % 60);
         minTot += minutos;
@@ -191,7 +203,7 @@ public class PlayerScript : MonoBehaviour
 
     private void MuestraEstres()
     {
-        textoEstres.text = string.Format("{0:00}", estres);
+        textoEstres.text = string.Format("{0:00}", estresInicial);
     }
 
 
@@ -199,12 +211,11 @@ public class PlayerScript : MonoBehaviour
     {
         //Debug.Log("PEDIDO ENTREGADO");
         int conteo = mesaDePedidos.transform.childCount;
-
         int estadoPedido = ChequeaPedido();
-        if(estres > 0 ) estres -= (reduccionEstres * estadoPedido);
-        if(estres < 0) estres = 0;
+        
+        botonEntrega.interactable = false;
 
-        if(estadoPedido == 0) AumentaEstres(aumentoEstresPedidoErroneo);
+        if(estadoPedido != 2) AumentaEstres(aumentoEstresPedidoErroneo); else ReduceEstres(reduccionEstresPedidoCorrecto);
 
         unCliente.GetComponent<CompradorScript>().Irse();
         filaDeClientes.GetComponent<FilaScript>().SeVaUno();
@@ -218,8 +229,8 @@ public class PlayerScript : MonoBehaviour
 
     public void FinalDelJuego()
     {
-        Debug.Log("FINAL DEL JUEGO. ESTRES: "+ estres);
-        EstadoDelJuego.estadoEstres = estres;
+        Debug.Log("FINAL DEL JUEGO. ESTRES: "+ estresInicial);
+        EstadoDelJuego.estadoEstres = estresInicial;
         filaDeClientes.GetComponent<FilaScript>().enabled = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 

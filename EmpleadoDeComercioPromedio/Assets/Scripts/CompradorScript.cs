@@ -27,6 +27,7 @@ public class CompradorScript : MonoBehaviour
     private Transform currentWaypoint;
     public string nombre;
     private bool entrego = false;
+    private bool listoParaCompra = false;
 
     public Transform cuadroDialogo;
     private TMP_Text textoDialogo;
@@ -58,16 +59,24 @@ public class CompradorScript : MonoBehaviour
             Avanzar();
             
         }
+
+        
+
     }
 
     public void Avanzar()
     {
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.position, moveSpeed * Time.deltaTime);
-            
+            //Debug.Log(nombre+":"+currentWaypoint.tag);
             if(Vector3.Distance(transform.position, currentWaypoint.position) < distanceThreshold)
             {
+                if(currentWaypoint.tag == "mostrador") listoParaCompra = true;
                 currentWaypoint = waypointsEntrada.GetNextWaypoint(currentWaypoint);
                 transform.LookAt(currentWaypoint);
+                
+
+                
+
                 pasitos++;
             }
         
@@ -89,13 +98,25 @@ public class CompradorScript : MonoBehaviour
 
     public Pedido GetPedido()
     {
-        entrego = true;
-        return elPedido;
+        if(listoParaCompra)
+        {
+            entrego = true;
+            return elPedido;
+        }
+
+        return null;
+
+        
     }
 
     public bool Entrego()
     {
         return entrego;
+    }
+
+    public bool ListoParaCompra()
+    {
+        return listoParaCompra;
     }
 
     public string GetNombre()
@@ -108,8 +129,14 @@ public class CompradorScript : MonoBehaviour
         textoDialogo.text = nombre + ": " + elPedido.solicitud;
     }
 
+    public void LimpiarSolicitud()
+    {
+        textoDialogo.text = "";
+    }
+
     public void Irse()
     {
+        LimpiarSolicitud();
         Destroy(gameObject);
         //Debug.Log("AH RE QUE DESAPARECIA");
         

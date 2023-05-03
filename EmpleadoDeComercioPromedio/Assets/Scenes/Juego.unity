@@ -1066,7 +1066,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1682,7 +1682,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4324,7 +4324,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 957720138}
   m_OnClick:
     m_PersistentCalls:
@@ -4414,8 +4414,8 @@ Camera:
   m_GameObject: {fileID: 963194225}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -4456,7 +4456,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: -15, y: 15, z: -19}
+  m_LocalPosition: {x: -15, y: 16, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6585,7 +6585,7 @@ GameObject:
   - component: {fileID: 1401353340}
   m_Layer: 0
   m_Name: WayPoints compra
-  m_TagString: Untagged
+  m_TagString: mostrador
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6924,7 +6924,7 @@ GameObject:
   - component: {fileID: 1490495957}
   m_Layer: 0
   m_Name: WayPoints compra
-  m_TagString: Untagged
+  m_TagString: mostrador
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8565,7 +8565,7 @@ MonoBehaviour:
   listaDePedidos: []
   player: {fileID: 105327472}
   cuadroDialogo: {fileID: 2127376533}
-  tiempoSpawneo: 3
+  tiempoSpawneo: 5
   largoFila: 6
   maxAttempts: 20
   nombres:
@@ -9676,7 +9676,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -9782,6 +9782,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
+      propertyPath: botonEntrega
+      value: 
+      objectReference: {fileID: 957720137}
+    - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
       propertyPath: cuadroEstres
       value: 
       objectReference: {fileID: 383048064}
@@ -9798,6 +9802,10 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
+      propertyPath: estresInicial
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
       propertyPath: mesaDePedidos
       value: 
       objectReference: {fileID: 633846212}
@@ -9807,14 +9815,22 @@ PrefabInstance:
       objectReference: {fileID: 1941407421}
     - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
       propertyPath: tiempoRestante
-      value: 60
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
       propertyPath: tiempoAumentaEstres
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
+      propertyPath: aumentoEstresXTiempo
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
       propertyPath: aumentoEstresPedidoErroneo
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8679991240008718116, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}
+      propertyPath: reduccionEstresPedidoCorrecto
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8679991240008718118, guid: 1c8fc23079dab3e40926d9423a7a4aa5, type: 3}

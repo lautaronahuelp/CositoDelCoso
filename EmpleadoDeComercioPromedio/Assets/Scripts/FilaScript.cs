@@ -108,7 +108,7 @@ public class FilaScript : MonoBehaviour
         
     
         //SetComprador(int i1, int i2, string tx, string nm)
-        if(!ExisteEnFila(nombres[ordenDeComprador]) /*&& transform.childCount < 1*/)
+        if(!ExisteEnFila(nombres[ordenDeComprador]) && !HayConteosMenores(ordenDeComprador))
         {
             newComprador = Instantiate(unComprador, transform);
             newComprador.GetComponent<CompradorScript>().SetComprador(item1[ordenDeComprador],item2[ordenDeComprador], EligeTexto(ordenDeComprador, conteo[ordenDeComprador]), nombres[ordenDeComprador]);

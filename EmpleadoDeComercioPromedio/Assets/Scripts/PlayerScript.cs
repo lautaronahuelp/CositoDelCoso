@@ -33,6 +33,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject mesaDePedidos, itemDePedido, filaDeClientes;
     public Transform cuadroTiempo;
     public Transform cuadroEstres;
+    public Image medidorEstres;
     public Button botonEntrega;
     private TMP_Text textoTiempo;
     private TMP_Text textoEstres;
@@ -149,15 +150,15 @@ public class PlayerScript : MonoBehaviour
 
     private void AumentaEstresPorTiempo()
     {
-        /*if(tiempoAumentaEstresRest > 0)
+        if(tiempoAumentaEstresRest > 0)
         {
             tiempoAumentaEstresRest -= Time.deltaTime;
         }
         else
         {
-            AumentaEstres(aumentoEstres);
+            AumentaEstres(aumentoEstresXTiempo);
             tiempoAumentaEstresRest = tiempoAumentaEstres;
-        }*/
+        }
     }
 
     private void AumentaEstres(float aum)
@@ -204,6 +205,18 @@ public class PlayerScript : MonoBehaviour
     private void MuestraEstres()
     {
         textoEstres.text = string.Format("{0:00}", estresInicial);
+        medidorEstres.fillAmount = estresInicial / 100;
+        medidorEstres.color = new Color(0.475f, 1f, 0f, 1f);
+        if(estresInicial > 20)
+        {
+            medidorEstres.color = new Color(1f, 0.529f, 0f, 1f);
+        }
+
+        if(estresInicial > 80)
+        {
+            medidorEstres.color = new Color(1f, 0f, 0f, 1f);
+        }
+        
     }
 
 

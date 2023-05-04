@@ -24,7 +24,7 @@ public class CompradorScript : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float distanceThreshold = 0.1f;
     public Transform puntoDeMira;
-    private Transform currentWaypoint;
+    private Transform currentWaypoint, waypointProvisorio;
     public string nombre;
     private bool entrego = false;
     private bool listoParaCompra = false;
@@ -32,7 +32,7 @@ public class CompradorScript : MonoBehaviour
     public Transform cuadroDialogo;
     private TMP_Text textoDialogo;
 
-    private int pasitos = 0;
+    //private int pasitos = 0;
     
 
     
@@ -42,8 +42,9 @@ public class CompradorScript : MonoBehaviour
         
         
         textoDialogo = cuadroDialogo.GetComponent<TMP_Text>();
-        currentWaypoint = waypointsEntrada.GetNextWaypoint(currentWaypoint);
-        transform.position = currentWaypoint.position;
+        transform.position = waypointsEntrada.GetNextWaypoint(null).position;
+        currentWaypoint = waypointsEntrada.GetFirstFreeWaypoint();
+        currentWaypoint.GetComponent<WayPointScript>().Ocupar();
         transform.LookAt(currentWaypoint);
         
         
@@ -54,11 +55,11 @@ public class CompradorScript : MonoBehaviour
     void Update()
     {
         
-        if(pasitos < 2)
-        {
+        //if(pasitos < 2)
+        //{
             Avanzar();
-            
-        }
+            //Debug.Log(currentWaypoint.name);
+        //}
 
         
 
@@ -70,14 +71,30 @@ public class CompradorScript : MonoBehaviour
             //Debug.Log(nombre+":"+currentWaypoint.tag);
             if(Vector3.Distance(transform.position, currentWaypoint.position) < distanceThreshold)
             {
-                if(currentWaypoint.tag == "mostrador") listoParaCompra = true;
-                currentWaypoint = waypointsEntrada.GetNextWaypoint(currentWaypoint);
-                transform.LookAt(currentWaypoint);
+                
+                if(currentWaypoint.tag == "mostrador")
+                {
+                    listoParaCompra = true;
+        
+                }
+                else  
+                {
+                    waypointProvisorio = waypointsEntrada.GetNextWaypoint(currentWaypoint);
+                    if(waypointProvisorio.GetComponent<WayPointScript>().EstaLibre())
+                    {
+                        currentWaypoint.GetComponent<WayPointScript>().Abandonar();
+                        currentWaypoint = waypointProvisorio;
+                        currentWaypoint.GetComponent<WayPointScript>().Ocupar();
+                        transform.LookAt(currentWaypoint);
+                    }
+                    
+                }
+                
                 
 
                 
 
-                pasitos++;
+                //pasitos++;
             }
         
             /*if(waypointsEntrada.IsLastWaypoint()){
@@ -137,7 +154,9 @@ public class CompradorScript : MonoBehaviour
     public void Irse()
     {
         LimpiarSolicitud();
+        currentWaypoint.GetComponent<WayPointScript>().Abandonar();
         Destroy(gameObject);
+        
         //Debug.Log("AH RE QUE DESAPARECIA");
         
     }

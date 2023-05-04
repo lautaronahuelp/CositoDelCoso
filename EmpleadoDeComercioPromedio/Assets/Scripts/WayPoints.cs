@@ -46,6 +46,24 @@ public class WayPoints : MonoBehaviour
         }
     }
 
+    public Transform GetFirstFreeWaypoint()
+    {
+        int i = 0;
+        Transform waypointProvisorio, waypointLibre;
+
+        do
+        {
+            waypointLibre = transform.GetChild(i);
+            i++;
+            waypointProvisorio = transform.GetChild(i);
+        } while(waypointProvisorio.GetComponent<WayPointScript>().EstaLibre() && waypointProvisorio.tag != "mostrador");
+
+        if(waypointProvisorio.GetComponent<WayPointScript>().EstaLibre()) return waypointProvisorio;
+        else return waypointLibre;
+        
+
+    }
+
     public bool IsLastWaypoint(){
         if(currentWaypointGlobal.GetSiblingIndex() == transform.childCount - 1)
         {

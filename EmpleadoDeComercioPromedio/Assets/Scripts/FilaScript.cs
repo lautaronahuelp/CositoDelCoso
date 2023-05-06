@@ -23,6 +23,7 @@ public class FilaScript : MonoBehaviour
     public string[] texto3;
     public int[] item1;
     public int[] item2;
+    public Material[] materialCuerpo;
     private int[] conteo = new int[]{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 
@@ -91,7 +92,7 @@ public class FilaScript : MonoBehaviour
         {
              ordenDeComprador = Random.Range(0, largoFila);
         }
-        while(HayConteosMenores(ordenDeComprador) && ExisteEnFila(nombres[ordenDeComprador]))
+        while(HayConteosMenores(ordenDeComprador) || ExisteEnFila(nombres[ordenDeComprador]));
         */
 
         //Debug.Log(">>"/*+ HayConteosMenores(ordenDeComprador)+ */+"orden: "+ordenDeComprador);
@@ -110,8 +111,9 @@ public class FilaScript : MonoBehaviour
         //SetComprador(int i1, int i2, string tx, string nm)
         if(!ExisteEnFila(nombres[ordenDeComprador]) && !HayConteosMenores(ordenDeComprador))
         {
+            Debug.Log(materialCuerpo[ordenDeComprador].color);
             newComprador = Instantiate(unComprador, transform);
-            newComprador.GetComponent<CompradorScript>().SetComprador(item1[ordenDeComprador],item2[ordenDeComprador], EligeTexto(ordenDeComprador, conteo[ordenDeComprador]), nombres[ordenDeComprador]);
+            newComprador.GetComponent<CompradorScript>().SetComprador(item1[ordenDeComprador],item2[ordenDeComprador], EligeTexto(ordenDeComprador, conteo[ordenDeComprador]), nombres[ordenDeComprador], materialCuerpo[ordenDeComprador]);
             newComprador.GetComponent<CompradorScript>().waypointsEntrada = waypointsCompradores[0];
             newComprador.GetComponent<CompradorScript>().cuadroDialogo = cuadroDialogo;
             conteo[ordenDeComprador]++;

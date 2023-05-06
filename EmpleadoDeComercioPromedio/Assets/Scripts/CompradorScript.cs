@@ -32,7 +32,7 @@ public class CompradorScript : MonoBehaviour
     public Transform cuadroDialogo;
     private TMP_Text textoDialogo;
 
-    //private int pasitos = 0;
+  
     
 
     
@@ -53,25 +53,21 @@ public class CompradorScript : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
-        //if(pasitos < 2)
-        //{
-            Avanzar();
-            //Debug.Log(currentWaypoint.name);
-        //}
-
-        
-
+    {      
+        Avanzar();
     }
 
     public void Avanzar()
     {
             transform.position = Vector3.MoveTowards(transform.position, currentWaypoint.position, moveSpeed * Time.deltaTime);
-            //Debug.Log(nombre+":"+currentWaypoint.tag);
+
             if(Vector3.Distance(transform.position, currentWaypoint.position) < distanceThreshold)
             {
-                
+                if(currentWaypoint.tag == "salida") 
+                {
+                    currentWaypoint.GetComponent<WayPointScript>().Abandonar();
+                    Destroy(gameObject);
+                }
                 if(currentWaypoint.tag == "mostrador")
                 {
                     listoParaCompra = true;
@@ -90,11 +86,6 @@ public class CompradorScript : MonoBehaviour
                     
                 }
                 
-                
-
-                
-
-                //pasitos++;
             }
         
             /*if(waypointsEntrada.IsLastWaypoint()){
@@ -105,11 +96,15 @@ public class CompradorScript : MonoBehaviour
             }*/
     }
 
-    public void SetComprador(int i1, int i2, string tx, string nm)
+    public void SetComprador(int i1, int i2, string tx, string nm, Material cl)
     {
-
+        Material[] actuales;
         nombre = nm;
-
+        Debug.Log(transform.GetChild(0).name);
+        actuales = transform.GetChild(0).GetComponent<MeshRenderer>().materials;
+        actuales[0] = cl;
+        actuales[1] = cl;
+        transform.GetChild(0).GetComponent<MeshRenderer>().materials = actuales;
         elPedido = new Pedido(i1, i2, tx);
     }
 
@@ -154,10 +149,13 @@ public class CompradorScript : MonoBehaviour
     public void Irse()
     {
         LimpiarSolicitud();
-        currentWaypoint.GetComponent<WayPointScript>().Abandonar();
-        Destroy(gameObject);
+
         
-        //Debug.Log("AH RE QUE DESAPARECIA");
+        currentWaypoint.GetComponent<WayPointScript>().Abandonar();
+        currentWaypoint = waypointsEntrada.GetNextWaypoint(currentWaypoint);
+        currentWaypoint.GetComponent<WayPointScript>().Ocupar();
+        transform.LookAt(currentWaypoint);
+        transform.parent = null;
         
     }
 

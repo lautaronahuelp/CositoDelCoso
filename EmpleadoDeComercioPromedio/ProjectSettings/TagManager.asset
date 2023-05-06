@@ -6,6 +6,9 @@ TagManager:
   tags:
   - mostrador
   - salida
+  - 1
+  - 2
+  - 3
   layers:
   - Default
   - TransparentFX

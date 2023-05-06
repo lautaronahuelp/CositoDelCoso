@@ -50,12 +50,19 @@ public class PlayerScript : MonoBehaviour
     public float aumentoEstresPedidoErroneo;
     public float reduccionEstresPedidoCorrecto;
 
+    public AudioClip stingerAcierto;
+    public AudioClip stingerError;
+    public AudioClip fxStart;
+    public float volumen = 1f;
+
+
     public float tiempoRestante;
     private float sumaDeTiempo;
     
     // Start is called before the first frame update
     void Start()
     {
+        AudioSource.PlayClipAtPoint(fxStart, new Vector3(-13.84000015258789f, 0.21999996900558473f, -1.9800000190734864f), volumen);
         Item.InicializaId();
         
         tiempoAumentaEstresRest = tiempoAumentaEstres;  
@@ -108,12 +115,13 @@ public class PlayerScript : MonoBehaviour
         bool clienteListo = unCliente.GetComponent<CompradorScript>().ListoParaCompra();
         
         //Debug.Log("OBTENER PEDIDO "+!unCliente.GetComponent<CompradorScript>().Entrego()+"|"+unCliente.GetComponent<CompradorScript>().ListoParaCompra());
-        if(clienteListo) botonEntrega.interactable = true;
+        
         if(!unCliente.GetComponent<CompradorScript>().Entrego() && clienteListo){
+            
             pedidoActual = unCliente.GetComponent<CompradorScript>().GetPedido();
             unCliente.GetComponent<CompradorScript>().MostrarSolicitud();
             atendiendo = unCliente.GetComponent<CompradorScript>().GetNombre();
-
+            botonEntrega.interactable = true;
         }
     }
 
@@ -222,13 +230,25 @@ public class PlayerScript : MonoBehaviour
 
     public void EntregaPedido()
     {
-        //Debug.Log("PEDIDO ENTREGADO");
+        
+        botonEntrega.interactable = false;
+        Debug.Log("BOTON DESHABILITADO");
         int conteo = mesaDePedidos.transform.childCount;
         int estadoPedido = ChequeaPedido();
         
-        botonEntrega.interactable = false;
+        
 
-        if(estadoPedido != 2) AumentaEstres(aumentoEstresPedidoErroneo); else ReduceEstres(reduccionEstresPedidoCorrecto);
+        if(estadoPedido != 2)
+        {
+            AudioSource.PlayClipAtPoint(stingerError, new Vector3(-13.84000015258789f, 0.21999996900558473f, -1.9800000190734864f), volumen);
+            AumentaEstres(aumentoEstresPedidoErroneo);
+        } 
+        else 
+        {
+            AudioSource.PlayClipAtPoint(stingerAcierto, new Vector3(-13.84000015258789f, 0.21999996900558473f, -1.9800000190734864f), volumen);
+            ReduceEstres(reduccionEstresPedidoCorrecto);
+        }
+        
 
         unCliente.GetComponent<CompradorScript>().Irse();
         filaDeClientes.GetComponent<FilaScript>().SeVaUno();

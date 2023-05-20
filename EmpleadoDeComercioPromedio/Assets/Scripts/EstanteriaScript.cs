@@ -27,8 +27,8 @@ public class EstanteriaScript : MonoBehaviour
     }
 
     void OnMouseDown(){
-        playerObject.GetComponent<WaypointMover>().Camina(waypointsToThis);
-        //waypointMover.enabled = true;
+        if(EstadoDelJuego.habilitaJuego) playerObject.GetComponent<WaypointMover>().Camina(waypointsToThis);
+        
         
     }
 

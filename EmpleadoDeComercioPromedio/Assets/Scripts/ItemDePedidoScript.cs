@@ -8,6 +8,7 @@ public class ItemDePedidoScript : MonoBehaviour
     public string itemName;
     public int type;
     public int id;
+    public bool comprobado = false;
     public GameObject player;
     public AudioClip clip;
     public float volumen = 1f;

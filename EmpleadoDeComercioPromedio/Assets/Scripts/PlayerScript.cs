@@ -43,12 +43,12 @@ public class PlayerScript : MonoBehaviour
 
     private string atendiendo;
 
-    public float estresInicial;
-    public float tiempoAumentaEstres;
+    public float estresInicial = EstadoDelJuego.estresInicial;
+    public float tiempoAumentaEstres = EstadoDelJuego.tiempoAumentaEstres;
     private float tiempoAumentaEstresRest;
-    public float aumentoEstresXTiempo;
-    public float aumentoEstresPedidoErroneo;
-    public float reduccionEstresPedidoCorrecto;
+    public float aumentoEstresXTiempo = EstadoDelJuego.aumentoEstresXTiempo;
+    public float aumentoEstresPedidoErroneo = EstadoDelJuego.aumentoEstresPedidoErroneo;
+    public float reduccionEstresPedidoCorrecto = EstadoDelJuego.reduccionEstresPedidoCorrecto;
 
     public AudioClip stingerAcierto;
     public AudioClip stingerError;
@@ -56,8 +56,10 @@ public class PlayerScript : MonoBehaviour
     public float volumen = 1f;
 
 
-    public float tiempoRestante;
+    public float tiempoRestante = EstadoDelJuego.tiempoDePartida;
     private float sumaDeTiempo;
+
+    
     
     // Start is called before the first frame update
     void Start()
@@ -76,11 +78,17 @@ public class PlayerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(filaDeClientes.transform.childCount > 0) ObtenerPedido();
-        PasaTiempo();
-        AumentaEstresPorTiempo();
-        MuestraTiempo(sumaDeTiempo);
-        MuestraEstres();
+
+        if(EstadoDelJuego.habilitaJuego){
+            if(filaDeClientes.transform.childCount > 0) ObtenerPedido();
+            PasaTiempo();
+            AumentaEstresPorTiempo();
+            MuestraTiempo(sumaDeTiempo);
+            MuestraEstres();
+
+
+        }
+        
         
         
         //Debug.Log(pedidoActual.pedido[0]);
@@ -88,6 +96,8 @@ public class PlayerScript : MonoBehaviour
         
         
     }
+
+
 
     public bool SetItem(Item unItem)
     {
@@ -127,16 +137,16 @@ public class PlayerScript : MonoBehaviour
 
     private int ChequeaPedido()
     {
-        int[] elegidos = {-1, -1};
         int count = 0;
-        for (int i = 0; i < mesaDePedidos.transform.childCount; i++)
+        foreach(int item in pedidoActual.pedido)
         {
-            elegidos[i] = mesaDePedidos.transform.GetChild(i).GetComponent<ItemDePedidoScript>().type;
-        }
-
-        for (int i = 0; i < slotsNumber; i++)
-        {
-            if(System.Array.IndexOf(elegidos, pedidoActual.pedido[i]) > -1) count++;
+            for(int i = 0; i < mesaDePedidos.transform.childCount; i++){
+                if(mesaDePedidos.transform.GetChild(i).GetComponent<ItemDePedidoScript>().type == item && !(mesaDePedidos.transform.GetChild(i).GetComponent<ItemDePedidoScript>().comprobado))
+                {
+                    count++;
+                    mesaDePedidos.transform.GetChild(i).GetComponent<ItemDePedidoScript>().comprobado = true;
+                }
+            }
         }
         
         
@@ -227,6 +237,15 @@ public class PlayerScript : MonoBehaviour
         
     }
 
+    public void CargaAjustes()
+    {
+        estresInicial = EstadoDelJuego.estresInicial;
+        tiempoAumentaEstres = EstadoDelJuego.tiempoAumentaEstres;
+        aumentoEstresXTiempo = EstadoDelJuego.aumentoEstresXTiempo;
+        aumentoEstresPedidoErroneo = EstadoDelJuego.aumentoEstresPedidoErroneo;
+        reduccionEstresPedidoCorrecto = EstadoDelJuego.reduccionEstresPedidoCorrecto;
+        tiempoRestante = EstadoDelJuego.tiempoDePartida;
+    }
 
     public void EntregaPedido()
     {
@@ -268,6 +287,7 @@ public class PlayerScript : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 
     }
+
 
     
 

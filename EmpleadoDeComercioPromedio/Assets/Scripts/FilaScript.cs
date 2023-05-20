@@ -56,9 +56,8 @@ public class FilaScript : MonoBehaviour
             else
             {
                 tiempoRestante = tiempoSpawneo;
-                if(transform.childCount < largoFila)
+                if(transform.childCount < largoFila && EstadoDelJuego.habilitaJuego)
                 {
-                    //Debug.Log("PASA A SPAWNEAR");
                     
                     SpawneaComprador();
                 }

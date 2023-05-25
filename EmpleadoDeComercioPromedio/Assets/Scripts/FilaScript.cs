@@ -10,7 +10,7 @@ public class FilaScript : MonoBehaviour
     public GameObject[] listaDePedidos;
     public Transform player;
     public Transform cuadroDialogo;
-    public float tiempoSpawneo;
+    public float tiempoSpawneo = EstadoDelJuego.tiempoDeSpawneo;
     public int largoFila;
     private float tiempoRestante;
 
@@ -112,7 +112,7 @@ public class FilaScript : MonoBehaviour
         {
             Debug.Log(materialCuerpo[ordenDeComprador].color);
             newComprador = Instantiate(unComprador, transform);
-            newComprador.GetComponent<CompradorScript>().SetComprador(item1[ordenDeComprador],item2[ordenDeComprador], EligeTexto(ordenDeComprador, conteo[ordenDeComprador]), nombres[ordenDeComprador], materialCuerpo[ordenDeComprador]);
+            newComprador.GetComponent<CompradorScript>().SetComprador(item1[ordenDeComprador],item2[ordenDeComprador], conteo[ordenDeComprador], EligeTexto(ordenDeComprador, conteo[ordenDeComprador]), nombres[ordenDeComprador], materialCuerpo[ordenDeComprador]);
             newComprador.GetComponent<CompradorScript>().waypointsEntrada = waypointsCompradores[0];
             newComprador.GetComponent<CompradorScript>().cuadroDialogo = cuadroDialogo;
             conteo[ordenDeComprador]++;
@@ -172,6 +172,11 @@ public class FilaScript : MonoBehaviour
     
     public void SeVaUno(){
         
-        Debug.Log("spawneados:"+transform.childCount);
+        //Debug.Log("spawneados:"+transform.childCount);
+    }
+
+    public void CargaAjustes()
+    {
+        tiempoSpawneo = EstadoDelJuego.tiempoDeSpawneo;
     }
 }

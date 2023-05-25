@@ -6,11 +6,13 @@ using TMPro;
 public class Pedido {
     public int[] pedido = new int[2];
     public string solicitud;
+    public int pasada;
     
-    public Pedido(int it1, int it2, string solic){
+    public Pedido(int it1, int it2, string solic, int ps){
         pedido[0] = it1;
         pedido[1] = it2;
         solicitud = solic;
+        pasada = ps;
     }
 
     
@@ -96,7 +98,7 @@ public class CompradorScript : MonoBehaviour
             }*/
     }
 
-    public void SetComprador(int i1, int i2, string tx, string nm, Material cl)
+    public void SetComprador(int i1, int i2, int ps, string tx, string nm, Material cl)
     {
         Material[] actuales;
         nombre = nm;
@@ -105,7 +107,7 @@ public class CompradorScript : MonoBehaviour
         actuales[0] = cl;
         actuales[1] = cl;
         transform.GetChild(0).GetComponent<MeshRenderer>().materials = actuales;
-        elPedido = new Pedido(i1, i2, tx);
+        elPedido = new Pedido(i1, i2, tx, ps);
     }
 
     public Pedido GetPedido()

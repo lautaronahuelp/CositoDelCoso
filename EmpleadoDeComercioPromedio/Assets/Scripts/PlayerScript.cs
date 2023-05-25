@@ -40,6 +40,7 @@ public class PlayerScript : MonoBehaviour
     private Transform unCliente;
     //private bool pedidoEnCurso = false;
     private Pedido pedidoActual;
+    public int pasada = 0;
 
     private string atendiendo;
 
@@ -49,7 +50,7 @@ public class PlayerScript : MonoBehaviour
     public float aumentoEstresXTiempo = EstadoDelJuego.aumentoEstresXTiempo;
     public float aumentoEstresPedidoErroneo = EstadoDelJuego.aumentoEstresPedidoErroneo;
     public float reduccionEstresPedidoCorrecto = EstadoDelJuego.reduccionEstresPedidoCorrecto;
-
+    public float estresMedioPedido = EstadoDelJuego.reduccionEstresMedioPedido - EstadoDelJuego.aumentoEstresMedioPedido;
     public AudioClip stingerAcierto;
     public AudioClip stingerError;
     public AudioClip fxStart;
@@ -127,10 +128,10 @@ public class PlayerScript : MonoBehaviour
         //Debug.Log("OBTENER PEDIDO "+!unCliente.GetComponent<CompradorScript>().Entrego()+"|"+unCliente.GetComponent<CompradorScript>().ListoParaCompra());
         
         if(!unCliente.GetComponent<CompradorScript>().Entrego() && clienteListo){
-            
             pedidoActual = unCliente.GetComponent<CompradorScript>().GetPedido();
             unCliente.GetComponent<CompradorScript>().MostrarSolicitud();
             atendiendo = unCliente.GetComponent<CompradorScript>().GetNombre();
+            pasada = pedidoActual.pasada;
             botonEntrega.interactable = true;
         }
     }
@@ -244,7 +245,14 @@ public class PlayerScript : MonoBehaviour
         aumentoEstresXTiempo = EstadoDelJuego.aumentoEstresXTiempo;
         aumentoEstresPedidoErroneo = EstadoDelJuego.aumentoEstresPedidoErroneo;
         reduccionEstresPedidoCorrecto = EstadoDelJuego.reduccionEstresPedidoCorrecto;
+        estresMedioPedido = EstadoDelJuego.reduccionEstresMedioPedido - EstadoDelJuego.aumentoEstresMedioPedido;
         tiempoRestante = EstadoDelJuego.tiempoDePartida;
+    }
+
+    public void GuardaAjustes()
+    {
+        EstadoDelJuego.estresInicial = estresInicial;
+        EstadoDelJuego.tiempoDePartida = tiempoRestante;
     }
 
     public void EntregaPedido()
@@ -256,16 +264,20 @@ public class PlayerScript : MonoBehaviour
         int estadoPedido = ChequeaPedido();
         
         
-
-        if(estadoPedido != 2)
+        switch(estadoPedido)
         {
-            AudioSource.PlayClipAtPoint(stingerError, new Vector3(-13.84000015258789f, 0.21999996900558473f, -1.9800000190734864f), volumen);
-            AumentaEstres(aumentoEstresPedidoErroneo);
-        } 
-        else 
-        {
-            AudioSource.PlayClipAtPoint(stingerAcierto, new Vector3(-13.84000015258789f, 0.21999996900558473f, -1.9800000190734864f), volumen);
-            ReduceEstres(reduccionEstresPedidoCorrecto);
+            case 0:
+                AudioSource.PlayClipAtPoint(stingerError, new Vector3(-13.84000015258789f, 0.21999996900558473f, -1.9800000190734864f), volumen);
+                AumentaEstres(aumentoEstresPedidoErroneo);
+                break;
+            case 2:
+                AudioSource.PlayClipAtPoint(stingerAcierto, new Vector3(-13.84000015258789f, 0.21999996900558473f, -1.9800000190734864f), volumen);
+                ReduceEstres(reduccionEstresPedidoCorrecto);
+                break;
+            default:
+                AudioSource.PlayClipAtPoint(stingerError, new Vector3(-13.84000015258789f, 0.21999996900558473f, -1.9800000190734864f), volumen);
+                ReduceEstres(estresMedioPedido);
+                break;
         }
         
 

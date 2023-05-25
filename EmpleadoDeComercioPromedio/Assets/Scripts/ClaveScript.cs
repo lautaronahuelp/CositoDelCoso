@@ -5,6 +5,11 @@ using UnityEngine;
 public class ClaveScript : MonoBehaviour
 {
     private int contrasenia = 0, tecleos = 0;
+    public GameObject pantallaAjustes;
+    public Transform elCanvas;
+    public Transform player;
+    public Transform fila;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,7 +42,15 @@ public class ClaveScript : MonoBehaviour
         if(contrasenia == 7) 
         {
             contrasenia = 0;
-            Debug.Log("ENTRA AJUSTES");
+            AbreAjustes();
         }
+    }
+
+    private void AbreAjustes()
+    {
+        EstadoDelJuego.habilitaJuego = false;
+        GameObject newPantalla = Instantiate(pantallaAjustes, elCanvas);
+        newPantalla.GetComponent<AjustesScript>().elPlayer = player;
+        newPantalla.GetComponent<AjustesScript>().laFila = fila;
     }
 }
